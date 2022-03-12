@@ -6,20 +6,19 @@ using System.Web;
 using System.Web.Mvc;
 using MyShhop.Core.Models;
 using MyShhop.Core.ViewModels;
+using MyShhop.Core.Contracts;
 
 namespace MyShhop.WebUI.Controllers
 {
     public class ProductManagerController : Controller
     {
-        InMemoryRepository<Product> context;
-        InMemoryRepository<ProductCategory> productCategories;
+        IRepository<Product> context;
+        IRepository<ProductCategory> productCategories;
 
-        public Product ProductManagerViewModel { get; private set; }
-
-        public ProductManagerController()
+        public ProductManagerController(IRepository<Product> productContext, IRepository<ProductCategory> productCategoriesContext)
         {
-            context = new InMemoryRepository<Product>();
-            productCategories = new InMemoryRepository<ProductCategory>();
+            context =productContext;
+            productCategories = productCategoriesContext;
         }
         // GET: ProductManager
         public ActionResult Index()

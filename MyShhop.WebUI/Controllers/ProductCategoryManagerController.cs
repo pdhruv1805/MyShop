@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using MyShhop.Core.Contracts;
 using MyShhop.Core.Models;
 using MyShhop.DataAccess.InMemory;
 
@@ -10,11 +11,12 @@ namespace MyShhop.WebUI.Controllers
 {
     public class ProductCategoryManagerController : Controller
     {
-        InMemoryRepository<ProductCategory> context;
+        IRepository<ProductCategory> context;
 
-        public ProductCategoryManagerController()
+
+        public ProductCategoryManagerController(IRepository<ProductCategory> context)
         {
-            context =new InMemoryRepository<ProductCategory>();
+            this.context =context;
         }
         // GET: ProductManager
         public ActionResult Index()

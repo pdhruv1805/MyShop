@@ -1,4 +1,5 @@
-﻿using MyShhop.Core.Models;
+﻿using MyShhop.Core.Contracts;
+using MyShhop.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MyShhop.DataAccess.InMemory
 {
-    public class InMemoryRepository<T> where T : BaseEntity
+    public class InMemoryRepository<T> : IRepository<T> where T : BaseEntity
     {
         ObjectCache cache = MemoryCache.Default;
         List<T> items;
@@ -18,7 +19,7 @@ namespace MyShhop.DataAccess.InMemory
         {
             className = typeof(T).Name;
             items = cache[className] as List<T>;
-            if(items == null)
+            if (items == null)
             {
                 items = new List<T>();
             }
@@ -28,6 +29,8 @@ namespace MyShhop.DataAccess.InMemory
         {
             cache[className] = items;
         }
+
+        
         public void Insert(T t)
         {
             items.Add(t);
@@ -36,7 +39,7 @@ namespace MyShhop.DataAccess.InMemory
         {
             T tToUpdate = items.Find(i => i.Id == t.Id);
 
-            if(tToUpdate != null)
+            if (tToUpdate != null)
             {
                 tToUpdate = t;
             }
@@ -47,7 +50,7 @@ namespace MyShhop.DataAccess.InMemory
         }
         public T Find(string Id)
         {
-            T t = items.Find(i=>i.Id == Id);
+            T t = items.Find(i => i.Id == Id);
             if (t != null)
             {
                 return t;
@@ -58,10 +61,10 @@ namespace MyShhop.DataAccess.InMemory
             }
         }
 
-            public IQueryable<T> Collection()
-            {
-                return items.AsQueryable();
-            }
+        public IQueryable<T> Collection()
+        {
+            return items.AsQueryable();
+        }
         public void Delete(string Id)
         {
             T tToDelete = items.Find(i => i.Id == Id);
@@ -75,6 +78,6 @@ namespace MyShhop.DataAccess.InMemory
                 throw new Exception(className + "Not Found");
             }
         }
-        
+
     }
 }
