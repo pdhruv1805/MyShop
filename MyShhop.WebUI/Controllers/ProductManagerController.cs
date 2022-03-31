@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using MyShhop.Core.Models;
 using MyShhop.Core.ViewModels;
 using MyShhop.Core.Contracts;
+using System.IO;
 
 namespace MyShhop.WebUI.Controllers
 {
@@ -37,7 +38,7 @@ namespace MyShhop.WebUI.Controllers
             return View(viewModel);
         }
         [HttpPost]
-        public ActionResult Create (Product product)
+        public ActionResult Create (Product product,HttpPostedFileBase file)
         {
             if (!ModelState.IsValid)
             {
@@ -45,6 +46,11 @@ namespace MyShhop.WebUI.Controllers
             }
             else
             {
+                if(file != null)
+                {
+                    product.Image = product.Id + Path.GetExtension(file.FileName);
+                    file.SaveAs(Server.MapPath("//Content//ProductImages//") + product.Image);
+                }
                 context.Insert(product);
                 context.Commit();
 
@@ -71,7 +77,7 @@ namespace MyShhop.WebUI.Controllers
 
         }
         [HttpPost]
-        public ActionResult Edit(Product product, string Id)
+        public ActionResult Edit(Product product, string Id,HttpPostedFileBase file)
         {
             Product productToEdit = context.Find(Id);
             if (productToEdit == null)
@@ -84,9 +90,14 @@ namespace MyShhop.WebUI.Controllers
                 {
                     return View(product);
                 }
+                if (file != null)
+                {
+                    productToEdit.Image = product.Id + Path.GetExtension(file.FileName);
+                    file.SaveAs(Server.MapPath("//Content//ProductImages//") + productToEdit.Image);
+                }
+                
                 productToEdit.Category = product.Category;
                 productToEdit.Description = product.Description;
-                productToEdit.Image = product.Image;
                 productToEdit.Name = product.Name;
                 productToEdit.Price = product.Price;
 
