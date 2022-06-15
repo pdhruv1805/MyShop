@@ -38,7 +38,7 @@ namespace MyShhop.WebUI.Controllers
             return View(viewModel);
         }
         [HttpPost]
-        public ActionResult Create (Product product,HttpPostedFileBase file)
+        public ActionResult Create(Product product, HttpPostedFileBase file)
         {
             if (!ModelState.IsValid)
             {
