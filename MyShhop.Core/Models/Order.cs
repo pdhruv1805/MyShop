@@ -20,5 +20,6 @@ namespace MyShhop.Core.Models
         public string ZipCode { get; set; }
         public string OrderStatus { get; set; }
         public virtual ICollection<OrderItem> OrderItems { get; set; }
+        public string Email { get; set; }
     }
 }
